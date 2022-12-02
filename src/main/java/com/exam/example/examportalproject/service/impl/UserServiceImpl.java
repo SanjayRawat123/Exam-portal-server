@@ -50,4 +50,16 @@ public class UserServiceImpl implements UserService {
        }
         return local;
     }
+
+    @Override
+    public User fatchUserByUserName(String userName) {
+        return this.userRepository.findByuserName(userName);
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        this.userRepository.deleteById(id);
+    }
+
+
 }
