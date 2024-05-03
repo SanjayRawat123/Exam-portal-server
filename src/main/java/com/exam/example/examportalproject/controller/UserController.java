@@ -7,26 +7,27 @@
 
 package com.exam.example.examportalproject.controller;
 
+
 import com.exam.example.examportalproject.model.Role;
 import com.exam.example.examportalproject.model.User;
 import com.exam.example.examportalproject.model.UserRole;
 import com.exam.example.examportalproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+
 import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/user")
+@CrossOrigin("*")
 public class UserController {
-
 
     private UserService userService;
 
     @Autowired
-
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -51,14 +52,19 @@ public class UserController {
     }
 
     @GetMapping(value = "/{userName}")
-public User getUser(@PathVariable("userName") String userName)    {
-        return this.userService.fatchUserByUserName(userName);
+
+public User getUser(@PathVariable("userName") String username)    {
+        return this.userService.fatchUserByusername(username);
     }
 
     @DeleteMapping(value = "/{id}")
-    public void deletfun1(@PathVariable("id") long id){
+    public void deletfun1(@PathVariable("id") long id) {
         this.userService.deleteUser(id);
 
     }
+
+
+
+
 
 }

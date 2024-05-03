@@ -7,12 +7,14 @@
 
 package com.exam.example.examportalproject.service.impl;
 
+//import com.exam.example.examportalproject.model.User;
 import com.exam.example.examportalproject.model.User;
 import com.exam.example.examportalproject.model.UserRole;
 import com.exam.example.examportalproject.repository.RoleRepository;
 import com.exam.example.examportalproject.repository.UserRepository;
 import com.exam.example.examportalproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -20,46 +22,44 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-@Autowired
+
+    @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-    this.roleRepository = roleRepository;
-}
+        this.roleRepository = roleRepository;
+    }
 
     private final RoleRepository roleRepository;
 
-
-//creating user
+    //creating user
     @Override
     public User createUser(User user, Set<UserRole> userRoles) throws Exception {
 
-       User local =this.userRepository.findByuserName(user.getUserName());
-       if(local!=null){
-           System.out.println("User is already there !!");
-           throw new Exception("User already present !!");
-       }else {
-           //user create
+        User local = this.userRepository.findByusername(user.getUsername());
+        if (local != null) {
+            System.out.println("User is already there !!");
+            throw new Exception("User already present !!");
+        } else {
+            //user create
 
-           for(UserRole userRole:userRoles)
-           {
-               roleRepository.save(userRole.getRole());
-           }
-           user.getUserRoles().addAll(userRoles);
-           local = this.userRepository.save(user);
+            for (UserRole userRole : userRoles) {
+                roleRepository.save(userRole.getRole());
+            }
+            user.getUserRoles().addAll(userRoles);
+            local = this.userRepository.save(user);
 
-       }
+        }
         return local;
     }
 
     @Override
-    public User fatchUserByUserName(String userName) {
-        return this.userRepository.findByuserName(userName);
+    public User fatchUserByusername(String username) {
+        return this.userRepository.findByusername(username);
     }
 
     @Override
     public void deleteUser(long id) {
         this.userRepository.deleteById(id);
     }
-
-
 }
+

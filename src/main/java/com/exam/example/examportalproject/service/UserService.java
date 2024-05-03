@@ -12,9 +12,12 @@ public interface UserService {
     public User createUser(User user, Set<UserRole>userRoles) throws Exception;
 
     //get user by name
-    public User fatchUserByUserName(String userName);
+    public User fatchUserByusername(String username);
 
     //delete user by id
 
     public void deleteUser(long id);
+
+
+    //public  abstract User loginCheck(String userName, String password);
 }
