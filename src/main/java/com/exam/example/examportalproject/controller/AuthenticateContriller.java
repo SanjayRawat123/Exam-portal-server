@@ -75,6 +75,7 @@ public class AuthenticateContriller {
     //returns the detaile of current user
     @GetMapping(value = "/current-user")
     public User getCurrentUser(Principal principal){
+        System.out.println("current user called ");
         return ((User)this.userDetailsService.loadUserByUsername(principal.getName())) ;
     }
 }

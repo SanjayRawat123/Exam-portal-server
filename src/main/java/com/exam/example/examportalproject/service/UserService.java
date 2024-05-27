@@ -18,6 +18,7 @@ public interface UserService {
 
     public void deleteUser(long id);
 
+    public boolean checkUsername (String username);
 
     //public  abstract User loginCheck(String userName, String password);
 }
