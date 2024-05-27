@@ -7,14 +7,14 @@
 
 package com.exam.example.examportalproject.model;
 
-public class JwtRequset {
+public class JwtRequest {
     String username;
     String password;
 
-    public JwtRequset() {
+    public JwtRequest() {
     }
 
-    public JwtRequset(String username, String password) {
+    public JwtRequest(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -23,7 +23,7 @@ public class JwtRequset {
         return username;
     }
 
-    public JwtRequset setUsername(String username) {
+    public JwtRequest setUsername(String username) {
         this.username = username;
         return this;
     }
@@ -32,7 +32,7 @@ public class JwtRequset {
         return password;
     }
 
-    public JwtRequset setPassword(String password) {
+    public JwtRequest setPassword(String password) {
         this.password = password;
         return this;
     }
