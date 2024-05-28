@@ -6,9 +6,16 @@ import java.util.Set;
 
 public interface CategoryService {
 
+    /**
+     * Adds a new category.
+     *
+     * @param category the category to be added
+     * @return the saved category
+     */
     public Category addCategory(Category category);
 
-    public Category updateCategory(Category category);
+
+    public Category updateCategory(Long categoryId ,Category category);
 
     public Set<Category> getCategories();
 
