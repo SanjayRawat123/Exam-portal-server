@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -56,7 +57,6 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(existingCategory);
     }
 
-    // Helper method to update fields of existing category
     private void updateCategoryFields(Category existingCategory, Category updatedCategory) {
         if (updatedCategory.getTitle() != null) {
             existingCategory.setTitle(updatedCategory.getTitle());
@@ -64,23 +64,38 @@ public class CategoryServiceImpl implements CategoryService {
         if (updatedCategory.getDescription() != null) {
             existingCategory.setDescription(updatedCategory.getDescription());
         }
-        // Add more fields to update as needed
     }
 
     @Override
-    public Set<Category> getCategories() {
-        return new LinkedHashSet<>(this.categoryRepository.findAll());
+    public List<Category> getCategories() {
+        try {
+            List<Category> categories = categoryRepository.findAll();
+            logger.info("Retrieved {} categories", categories.size());
+            return categories;
+        } catch (Exception e) {
+            logger.error("Error while retrieving categories: {}", e.getMessage());
+            throw new RuntimeException("Could not retrieve categories", e);
+        }
     }
 
     @Override
     public Category getCategoryById(Long cId) {
-        return this.categoryRepository.findById(cId).get();
+        return categoryRepository.findById(cId)
+                .orElseThrow(() -> new CategoryNotFoundException("Category with ID " + cId + " not found"));
     }
+
 
     @Override
     public void deleteCategory(Long cId) {
-       Category category =new Category();
-       category.setcId(cId);
-       this.categoryRepository.delete( category);
+        if (!categoryRepository.existsById(cId)) {
+            throw new CategoryNotFoundException("Category with ID " + cId + " not found");
+        }
+        try {
+            categoryRepository.deleteById(cId);
+            logger.info("Category with ID {} deleted successfully", cId);
+        } catch (Exception e) {
+            logger.error("Error while deleting category with ID {}: {}", cId, e.getMessage());
+            throw new RuntimeException("Could not delete category", e);
+        }
     }
 }

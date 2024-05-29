@@ -10,24 +10,24 @@ package com.exam.example.examportalproject.model.category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="category")
+@Table(name = "category")
 public class Category {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long cId;
 
     private String title;
 
     private String description;
 
-    @OneToMany(mappedBy="category",fetch= FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Quiz> quizzes =new LinkedHashSet<>();
-
+    private List<Quiz> quizzes = new ArrayList<>();
 
     public Category() {
     }
@@ -61,6 +61,15 @@ public class Category {
 
     public Category setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public List<Quiz> getQuizzes() {
+        return quizzes;
+    }
+
+    public Category setQuizzes(List<Quiz> quizzes) {
+        this.quizzes = quizzes;
         return this;
     }
 }
