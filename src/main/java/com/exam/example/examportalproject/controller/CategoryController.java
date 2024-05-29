@@ -55,7 +55,7 @@ public class CategoryController {
      *
      * @return the list of categories wrapped in a standardized response
      */
-    @GetMapping
+    @GetMapping(value = "/")
     public ResponseEntity<ApiResponse<List<Category>>> getCategories() {
         logger.info("Fetching all categories");
 

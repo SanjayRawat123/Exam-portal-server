@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/quiz")
 @CrossOrigin("*")
@@ -47,24 +49,66 @@ public class QuizController {
         }
     }
 
-    // update quiz
+    /**
+     * Update an existing quiz.
+     *
+     * @param quiz the category to update
+     * @return the updated quiz wrapped in a standardized response
+     */
     @PutMapping("/")
-    public ResponseEntity<Quiz>update(@RequestBody Quiz quiz){
-        return  ResponseEntity.ok(this.quizService.updateQuiz(quiz));
+    public ResponseEntity<ApiResponse<Quiz>> update(@RequestBody Quiz quiz) {
+        logger.info("Updating category with ID: {}", quiz.getqId());
+        try {
+            Quiz updatedQuiz = quizService.updateQuiz(quiz.getqId(), quiz);
+            ApiResponse<Quiz> response = new ApiResponse<>("success", "Quiz updated successfully", updatedQuiz);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error updating category: {}", e.getMessage());
+            ApiResponse<Quiz> response = new ApiResponse<>("error", "Error updating quiz", null);
+            return ResponseEntity.status(500).body(response);
+        }
     }
 
-   // get quizzes
+    /**
+     * Get quizzes list.
+     *
+     * @return list of quizzes wrapped in a standardized response
+     */
     @GetMapping("/")
-    public ResponseEntity<?>getQuizzes(){
-        return ResponseEntity.ok(this.quizService.getQuizzes());
+    public ResponseEntity<ApiResponse<List<Quiz>>> getQuizzes() {
+        logger.info("Fetching all quizzes");
+        try {
+            List<Quiz> quizzes = quizService.getQuizzes();
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "Quizzes retrieved succesfully", quizzes);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error updating category: {}", e.getMessage());
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("error", "Error Fetching quizzes", null);
+            return ResponseEntity.status(5000).body(response);
+        }
 
     }
 
-
+    /**
+     * Get a quiz by ID.
+     *
+     * @param qId the quiz ID
+     * @return the quiz wrapped in a standardized response
+     */
     @GetMapping("/{qId}")
-    public Quiz quiz (@PathVariable("qId") Long qid){
+    public ResponseEntity<ApiResponse<Quiz>> quiz(@PathVariable("qId") long qId) {
 
-        return this.quizService.getQuizById(qid);
+        logger.info("Fetching category with ID: {}", qId);
+
+        try {
+            Quiz quiz = quizService.getQuizById(qId);
+            ApiResponse<Quiz> response = new ApiResponse<>("success", "Quiz retrieved successfully", quiz);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error fetching category with ID {}: {}", qId, e.getMessage());
+            ApiResponse<Quiz> response = new ApiResponse<>("error", "Error fetching category", null);
+            return ResponseEntity.status(500).body(response);
+        }
 
     }
 
