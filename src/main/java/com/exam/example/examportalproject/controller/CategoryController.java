@@ -114,11 +114,25 @@ public class CategoryController {
         }
     }
 
-    //delete category
 
-    @DeleteMapping(value = "/{cId}")
-    public void deleteCatrgory(@PathVariable ("cId") long cId){
-        this.categoryService.deleteCategory(cId);
+    /**
+     * Delete a category by ID.
+     *
+     * @param cId the category ID
+     * @return a standardized response indicating the result of the deletion
+     */
+    @DeleteMapping("/{cId}")
+    public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable("cId") Long cId) {
+        logger.info("Deleting category with ID: {}", cId);
+
+        try {
+            categoryService.deleteCategory(cId);
+            ApiResponse<Void> response = new ApiResponse<>("success", "Category deleted successfully", null);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error deleting category with ID {}: {}", cId, e.getMessage());
+            ApiResponse<Void> response = new ApiResponse<>("error", "Error deleting category", null);
+            return ResponseEntity.status(500).body(response);
+        }
     }
-
 }
