@@ -20,6 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -66,10 +67,14 @@ public class CategoryServiceImpl implements CategoryService {
         }
     }
 
+
     @Override
     public List<Category> getCategories() {
         try {
-            List<Category> categories = categoryRepository.findAll();
+            List<Category> categories = categoryRepository.findAll()
+                    .stream()
+                    .sorted((c1, c2) -> Long.compare(c2.getcId(), c1.getcId())) // Sorting by cId in descending order
+                    .collect(Collectors.toList());
             logger.info("Retrieved {} categories", categories.size());
             return categories;
         } catch (Exception e) {
