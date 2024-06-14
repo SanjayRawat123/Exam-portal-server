@@ -60,7 +60,7 @@ public class QuestionController {
 
      Quiz quiz =   this.quizService.getQuizById(qId);
 
-       Set<Question>questions= quiz.getQuestions();
+       List<Question>questions= quiz.getQuestions();
         List list = new ArrayList(questions);
         if(list.size()>Integer.parseInt(quiz.getNumOfQuestions()));
         {

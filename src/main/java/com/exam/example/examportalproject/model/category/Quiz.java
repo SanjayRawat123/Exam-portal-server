@@ -10,7 +10,9 @@ package com.exam.example.examportalproject.model.category;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -34,7 +36,8 @@ public class Quiz {
 
     @OneToMany(mappedBy = "quiz",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
-    private Set<Question> questions=new HashSet<>();
+    private List<Question> questions=new ArrayList<>();
+
     public Quiz() {
     }
 
@@ -101,11 +104,11 @@ public class Quiz {
         return this;
     }
 
-    public Set<Question> getQuestions() {
+    public List<Question> getQuestions() {
         return questions;
     }
 
-    public Quiz setQuestions(Set<Question> questions) {
+    public Quiz setQuestions(List<Question> questions) {
         this.questions = questions;
         return this;
     }
