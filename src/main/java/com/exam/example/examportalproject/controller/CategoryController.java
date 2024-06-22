@@ -1,9 +1,8 @@
 /*
- * Author Name:
+ * Author Name:Sanjay
  * Date: 12/16/2022
  * Created With: IntelliJ IDEA Community Edition
  */
-
 
 package com.exam.example.examportalproject.controller;
 
@@ -23,6 +22,7 @@ import java.util.List;
 @CrossOrigin("*")
 @Validated
 public class CategoryController {
+
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     @Autowired
@@ -37,18 +37,16 @@ public class CategoryController {
     @PostMapping(value = "/")
     public ResponseEntity<ApiResponse<Category>> addCategory(@RequestBody Category category) {
         logger.info("Adding new category: {}", category.getTitle());
-
         try {
             Category addedCategory = categoryService.addCategory(category);
             ApiResponse<Category> response = new ApiResponse<>("success", "Category added successfully", addedCategory);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-                logger.error("Error adding category: {}", e.getMessage());
+            logger.error("Error adding category: {}", e.getMessage());
             ApiResponse<Category> response = new ApiResponse<>("error", "Error adding category", null);
             return ResponseEntity.status(500).body(response);
         }
     }
-
 
     /**
      * Get all categories.
@@ -58,7 +56,6 @@ public class CategoryController {
     @GetMapping(value = "/")
     public ResponseEntity<ApiResponse<List<Category>>> getCategories() {
         logger.info("Fetching all categories");
-
         try {
             List<Category> categories = categoryService.getCategories();
             ApiResponse<List<Category>> response = new ApiResponse<>("success", "Categories retrieved successfully", categories);
@@ -70,7 +67,6 @@ public class CategoryController {
         }
     }
 
-
     /**
      * Get a category by ID.
      *
@@ -80,7 +76,6 @@ public class CategoryController {
     @GetMapping("/{cId}")
     public ResponseEntity<ApiResponse<Category>> getCategoryById(@PathVariable long cId) {
         logger.info("Fetching category with ID: {}", cId);
-
         try {
             Category category = categoryService.getCategoryById(cId);
             ApiResponse<Category> response = new ApiResponse<>("success", "Category retrieved successfully", category);
@@ -92,7 +87,6 @@ public class CategoryController {
         }
     }
 
-
     /**
      * Update an existing category.
      *
@@ -102,9 +96,8 @@ public class CategoryController {
     @PutMapping(value = "/")
     public ResponseEntity<ApiResponse<Category>> updateCategory(@RequestBody Category category) {
         logger.info("Updating category with ID: {}", category.getcId());
-
         try {
-            Category updatedCategory = categoryService.updateCategory(category.getcId() ,category);
+            Category updatedCategory = categoryService.updateCategory(category.getcId(), category);
             ApiResponse<Category> response = new ApiResponse<>("success", "Category updated successfully", updatedCategory);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -113,7 +106,6 @@ public class CategoryController {
             return ResponseEntity.status(500).body(response);
         }
     }
-
 
     /**
      * Delete a category by ID.
@@ -124,7 +116,6 @@ public class CategoryController {
     @DeleteMapping("/{cId}")
     public ResponseEntity<ApiResponse<Void>> deleteCategory(@PathVariable("cId") Long cId) {
         logger.info("Deleting category with ID: {}", cId);
-
         try {
             categoryService.deleteCategory(cId);
             ApiResponse<Void> response = new ApiResponse<>("success", "Category deleted successfully", null);

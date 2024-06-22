@@ -7,11 +7,13 @@
 
 package com.exam.example.examportalproject.controller;
 
+import com.exam.example.examportalproject.exception.QuizNotFoundException;
 import com.exam.example.examportalproject.model.category.Quiz;
 import com.exam.example.examportalproject.service.QuizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -118,17 +120,20 @@ public class QuizController {
      * @return a standardized response indicating the result of the deletion
      */
     @DeleteMapping(value = "/{qId}")
-    public ResponseEntity<ApiResponse<Void>> deleteQuiz(@PathVariable("qId") Long qId) {
+    public ResponseEntity<ApiResponse<Void>> deleteQuiz(@PathVariable Long qId) {
         logger.info("Deleting quiz with ID: {}", qId);
-
         try {
             quizService.deleteQuiz(qId);
-            ApiResponse<Void> response = new ApiResponse<>("success", "quiz deleted successfully", null);
+            ApiResponse<Void> response = new ApiResponse<>("success", "Quiz deleted successfully", null);
             return ResponseEntity.ok(response);
+        } catch (QuizNotFoundException e) {
+            logger.error("Quiz not found with ID {}: {}", qId, e.getMessage());
+            ApiResponse<Void> response = new ApiResponse<>("error", e.getMessage(), null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } catch (Exception e) {
             logger.error("Error deleting quiz with ID {}: {}", qId, e.getMessage());
             ApiResponse<Void> response = new ApiResponse<>("error", "Error deleting quiz", null);
-            return ResponseEntity.status(500).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }

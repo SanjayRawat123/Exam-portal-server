@@ -85,7 +85,6 @@ public class QuizServiceImpl implements QuizService {
             logger.error("Error while retrieving quizzes: {}", e.getMessage());
             throw new RuntimeException("Could not retrieve quizzes", e);
         }
-//        return new ArrayList<Quiz>(this.quizRepository.findAll());
     }
 
     @Override
@@ -106,7 +105,7 @@ public class QuizServiceImpl implements QuizService {
             logger.error("Error while deleting quiz with ID {}: {}", qId, e.getMessage());
             throw new RuntimeException("Could not delete quiz", e);
         }
-        this.quizRepository.deleteById(qId);
+
     }
 
 

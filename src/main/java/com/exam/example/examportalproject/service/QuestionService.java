@@ -3,19 +3,20 @@ package com.exam.example.examportalproject.service;
 import com.exam.example.examportalproject.model.category.Question;
 import com.exam.example.examportalproject.model.category.Quiz;
 
-import java.util.Set;
+import java.util.List;
 
 public interface QuestionService {
+    Question addQuestion(Question question);
 
-    public Question addQuestion(Question question);
+    Question updateQuestion(Question question);
 
-    public Question updateQuestion(Question question);
+    List<Question> getAllQuestions();
 
-    public Set<Question>getQuestion();
+    Question getQuestionById(Long questionId);
 
-    public Question getQuestionBy(Long quesId);
+    List<Question> getQuestionsOfQuiz(Quiz quiz);
 
-    public Set<Question>getQuestionOfQuiz(Quiz quiz);
+    void deleteQuestion(Long questionId);
 
-    public void deleteQustion(Long quesId);
+
 }

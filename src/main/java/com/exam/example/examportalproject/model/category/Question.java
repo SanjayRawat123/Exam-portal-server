@@ -25,11 +25,23 @@ public class Question {
     private String option3;
     private String option4;
 
-    private String Answer;
+    private String answer;
     @ManyToOne(fetch = FetchType.EAGER)
     private Quiz quiz;
 
     public Question() {
+    }
+
+    public Question(long quesId, String content, String image, String option1, String option2, String option3, String option4, String answer, Quiz quiz) {
+        this.quesId = quesId;
+        this.content = content;
+        this.image = image;
+        this.option1 = option1;
+        this.option2 = option2;
+        this.option3 = option3;
+        this.option4 = option4;
+        this.answer = answer;
+        this.quiz = quiz;
     }
 
     public long getQuesId() {
@@ -96,11 +108,11 @@ public class Question {
     }
 
     public String getAnswer() {
-        return Answer;
+        return answer;
     }
 
     public Question setAnswer(String answer) {
-        Answer = answer;
+        this.answer = answer;
         return this;
     }
 

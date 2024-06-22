@@ -16,6 +16,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(QuizNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleQuizNotFoundException(QuizNotFoundException e) {
+        ApiResponse<Void> response = new ApiResponse<>("error", e.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiResponse<Object>> handleIllegalArgumentException(IllegalArgumentException e) {
