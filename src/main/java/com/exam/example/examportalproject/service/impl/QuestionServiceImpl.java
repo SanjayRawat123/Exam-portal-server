@@ -33,6 +33,18 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Question addQuestion(Question question) {
+        logger.info("Adding new questions for save: {}", question);
+
+        // Check if the quiz is saved
+        if (question.getQuiz().getqId() == 0) {
+            logger.error("Quiz is not saved. Please save the quiz first.");
+            throw new IllegalStateException("Quiz must be saved before saving a question.");
+        } else {
+            // Fetch the quiz from the database to ensure it is managed by Hibernate
+            Quiz quiz = quizService.getQuizById(question.getQuiz().getqId());
+            question.setQuiz(quiz);
+        }
+
         return questionRepository.save(question);
     }
 
