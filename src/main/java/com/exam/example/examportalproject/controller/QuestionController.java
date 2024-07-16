@@ -113,7 +113,7 @@ public class QuestionController {
      * @param questionId the question ID
      * @return the question wrapped in a standardized response
      */
-    @GetMapping("/{questionId}")
+    @GetMapping(value="/{questionId}")
     public ResponseEntity<ApiResponse<Question>> getQuestionById(@PathVariable("questionId") Long questionId) {
         logger.info("Fetching question with ID: {}", questionId);
 
@@ -134,7 +134,8 @@ public class QuestionController {
      * @param questionId the question ID
      * @return a standardized response indicating the result of the deletion
      */
-    @DeleteMapping("/{questionId}")
+    // Delete Question
+    @DeleteMapping( value="/{questionId}")
     public ResponseEntity<ApiResponse<Void>> deleteQuestion(@PathVariable("questionId") Long questionId) {
         logger.info("Deleting question with ID: {}", questionId);
 

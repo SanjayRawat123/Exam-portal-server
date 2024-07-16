@@ -8,6 +8,7 @@
 package com.exam.example.examportalproject.controller;
 
 import com.exam.example.examportalproject.exception.QuizNotFoundException;
+import com.exam.example.examportalproject.model.category.Category;
 import com.exam.example.examportalproject.model.category.Quiz;
 import com.exam.example.examportalproject.service.QuizService;
 import org.slf4j.Logger;
@@ -136,4 +137,23 @@ public class QuizController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @GetMapping("/category/{cId}")
+    public ResponseEntity<ApiResponse<List<Quiz>>>quizzezOfCategory(@PathVariable Long cId){
+        try{
+            Category category = new Category();
+            category.setcId(cId);
+            List<Quiz> quizzes = quizService.getQuizzesOfCategory(category);
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "Quizzes retrieved succesfully", quizzes);
+            return ResponseEntity.ok(response);
+
+        }catch (Exception e) {
+
+                logger.error("Error updating quiz: {}", e.getMessage());
+                ApiResponse<List<Quiz>> response = new ApiResponse<>("error", "Error Fetching quizzes", null);
+                return ResponseEntity.status(5000).body(response);
+        }
+
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.exam.example.examportalproject.service;
 
+import com.exam.example.examportalproject.model.category.Category;
 import com.exam.example.examportalproject.model.category.Quiz;
-
 import javax.persistence.SecondaryTable;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +49,12 @@ public interface QuizService {
 
     public void deleteQuiz(Long qId);
 
+    /**
+     * Get list of quizzes  by category.
+     *
+     * @param category  of the quiz
+     */
 
+    public  List<Quiz> getQuizzesOfCategory (Category category);
 
 }

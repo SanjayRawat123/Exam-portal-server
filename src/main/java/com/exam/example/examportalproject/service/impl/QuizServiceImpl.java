@@ -8,6 +8,7 @@
 package com.exam.example.examportalproject.service.impl;
 
 import com.exam.example.examportalproject.exception.CategoryNotFoundException;
+import com.exam.example.examportalproject.model.category.Category;
 import com.exam.example.examportalproject.model.category.Quiz;
 import com.exam.example.examportalproject.repository.QuizRepository;
 import com.exam.example.examportalproject.service.QuizService;
@@ -106,6 +107,11 @@ public class QuizServiceImpl implements QuizService {
             throw new RuntimeException("Could not delete quiz", e);
         }
 
+    }
+
+    @Override
+    public List<Quiz> getQuizzesOfCategory(Category category) {
+        return this.quizRepository.findBycategory(category);
     }
 
 

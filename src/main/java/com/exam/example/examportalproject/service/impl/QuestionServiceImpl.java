@@ -10,7 +10,6 @@ package com.exam.example.examportalproject.service.impl;
 import com.exam.example.examportalproject.model.category.Question;
 import com.exam.example.examportalproject.model.category.Quiz;
 import com.exam.example.examportalproject.repository.QuestionRepository;
-import com.exam.example.examportalproject.repository.QuizRepository;
 import com.exam.example.examportalproject.service.QuestionService;
 import com.exam.example.examportalproject.service.QuizService;
 import org.hibernate.Hibernate;
@@ -19,12 +18,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    private static final Logger logger = LoggerFactory.getLogger(QuizServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(QuestionServiceImpl.class);
     @Autowired
     private QuizService quizService;
 
@@ -58,6 +58,7 @@ public class QuestionServiceImpl implements QuestionService {
         Hibernate.initialize(fullQuiz.getQuestions());
         return new ArrayList<>(fullQuiz.getQuestions());
     }
+
     @Override
     public List<Question> getAllQuestions() {
         try {
@@ -77,12 +78,21 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void deleteQuestion(Long questionId) {
-        if (questionRepository.existsById(questionId)) {
-            questionRepository.deleteById(questionId);
-            logger.info("Question with ID {} deleted successfully", questionId);
-        } else {
-            throw new RuntimeException("Question with ID " + questionId + " does not exist");
+    @Transactional
+    public void deleteQuestion(Long quesId) {
+        logger.info("Attempting to delete question with ID: {}", quesId);
+
+        try {
+            if (questionRepository.existsById(quesId)) {
+                questionRepository.deleteById(quesId);
+                logger.info("Question with ID {} deleted successfully", quesId);
+            } else {
+                logger.info("Question with ID {} not found", quesId);
+                throw new RuntimeException("Question with ID " + quesId + " does not exist");
+            }
+        } catch (Exception e) {
+            logger.error("Error deleting question with ID {}: {}", quesId, e.getMessage());
+            throw new RuntimeException("Error deleting question", e);
         }
     }
 }
