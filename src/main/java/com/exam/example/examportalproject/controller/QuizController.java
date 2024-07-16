@@ -139,21 +139,26 @@ public class QuizController {
     }
 
     @GetMapping("/category/{cId}")
-    public ResponseEntity<ApiResponse<List<Quiz>>>quizzezOfCategory(@PathVariable Long cId){
-        try{
+    public ResponseEntity<ApiResponse<List<Quiz>>> quizzezOfCategory(@PathVariable Long cId) {
+        try {
             Category category = new Category();
             category.setcId(cId);
             List<Quiz> quizzes = quizService.getQuizzesOfCategory(category);
-            ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "Quizzes retrieved succesfully", quizzes);
+
+            if (quizzes.isEmpty()) {
+                ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "No quizzes found for this category", quizzes);
+                return ResponseEntity.ok(response);
+            }
+
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "Quizzes retrieved successfully", quizzes);
             return ResponseEntity.ok(response);
-
-        }catch (Exception e) {
-
-                logger.error("Error updating quiz: {}", e.getMessage());
-                ApiResponse<List<Quiz>> response = new ApiResponse<>("error", "Error Fetching quizzes", null);
-                return ResponseEntity.status(5000).body(response);
+        } catch (Exception e) {
+            logger.error("Error fetching quizzes: {}", e.getMessage());
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("error", "Error fetching quizzes", null);
+            return ResponseEntity.status(500).body(response);
         }
-
     }
+
+
 
 }

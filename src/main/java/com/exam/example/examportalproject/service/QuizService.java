@@ -2,9 +2,8 @@ package com.exam.example.examportalproject.service;
 
 import com.exam.example.examportalproject.model.category.Category;
 import com.exam.example.examportalproject.model.category.Quiz;
-import javax.persistence.SecondaryTable;
+
 import java.util.List;
-import java.util.Set;
 
 public interface QuizService {
 
@@ -52,9 +51,26 @@ public interface QuizService {
     /**
      * Get list of quizzes  by category.
      *
-     * @param category  of the quiz
+     * @param category  of the quiz.
+     *
+     *  @return the Quiz list for given category.
      */
 
     public  List<Quiz> getQuizzesOfCategory (Category category);
 
+    /**
+     * Get list of Active quizzes.
+     *
+     * @return the list of active quizzez
+     */
+
+    List<Quiz> getActiveQuizzes();
+
+    /**
+     * Retrieves list of Active quizzes of category .
+     *@param category the quiz of category
+     * @return the list of active quizzez for given category;
+     */
+
+    List<Quiz> getActiveQuizzesOfCategory(Category category);
 }
