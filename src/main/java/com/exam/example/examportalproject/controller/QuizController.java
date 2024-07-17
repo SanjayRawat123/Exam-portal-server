@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -138,6 +137,10 @@ public class QuizController {
         }
     }
 
+    /**
+     * Get a List of  quiz for specific category
+     * @return the quiz wrapped in a standardized response
+     */
     @GetMapping("/category/{cId}")
     public ResponseEntity<ApiResponse<List<Quiz>>> quizzezOfCategory(@PathVariable Long cId) {
         try {
@@ -159,6 +162,48 @@ public class QuizController {
         }
     }
 
+    /**
+     * Get a List of active quiz
+     * @return the quiz wrapped in a standardized response
+     */
+    @GetMapping("/active")
+    public ResponseEntity<ApiResponse<List<Quiz>>> getActiveQuizzess() {
+        try {
+            List<Quiz> quizzes = this.quizService.getActiveQuizzes();
+            if (quizzes.isEmpty()) {
+                ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "No quizzes found for this category", quizzes);
+                return ResponseEntity.ok(response);
+            }
 
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "Quizzes retrieved successfully", quizzes);
+            return ResponseEntity.ok(response);
 
+        } catch (Exception e) {
+            logger.error("Error fetching quizzes: {}", e.getMessage());
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("error", "Error fetching quizzes", null);
+            return ResponseEntity.status(500).body(response);
+        }
+    }
+
+    @GetMapping("/category/active/{cId}")
+
+    public ResponseEntity<ApiResponse<List<Quiz>>> getActiveQuizzesforCategory(@PathVariable("cId") Long cId){
+        try {
+            Category category = new Category();
+            category.setcId(cId);
+            List<Quiz> quizzes = this.quizService.getActiveQuizzesOfCategory(category);
+            if (quizzes.isEmpty()) {
+                ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "No quizzes found for this category", quizzes);
+                return ResponseEntity.ok(response);
+            }
+
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("success", "Quizzes retrieved successfully", quizzes);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            logger.error("Error fetching quizzes: {}", e.getMessage());
+            ApiResponse<List<Quiz>> response = new ApiResponse<>("error", "Error fetching quizzes", null);
+            return ResponseEntity.status(500).body(response);
+        }
+    }
 }

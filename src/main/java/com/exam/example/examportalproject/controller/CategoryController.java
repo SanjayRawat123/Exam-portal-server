@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping(value = "/category")
 @CrossOrigin("*")
 @Validated
-public class CategoryController {
+public class  CategoryController {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
