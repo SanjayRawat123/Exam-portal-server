@@ -106,6 +106,22 @@ public class QuestionController {
         }
     }
 
+    @GetMapping(value = "/quiz/all/{quizId}")
+    public ResponseEntity<ApiResponse<List<Question>>> getQuestionsOfQuizAdmin(@PathVariable("quizId") Long quizId) {
+        logger.info("Fetching questions for quiz with ID: {}", quizId);
+
+        try {
+            Quiz quiz = new Quiz();
+            quiz.setqId(quizId);
+            List<Question> questionsOfQuiz=    questionService.getQuestionsOfQuiz(quiz);
+            ApiResponse<List<Question>> response = new ApiResponse<>("success", "Questions retrieved successfully", questionsOfQuiz);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error fetching questions for quiz with ID {}: {}", quizId, e.getMessage());
+            ApiResponse<List<Question>> response = new ApiResponse<>("error", "Error fetching questions", null);
+            return ResponseEntity.status(500).body(response);
+        }
+    }
 
     /**
      * Get a single question by ID.
