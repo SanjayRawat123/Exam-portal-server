@@ -25,14 +25,15 @@ public class Question {
     private String option3;
     private String option4;
     private String answer;
-
+    private String givenAnswer;
     @ManyToOne(fetch = FetchType.EAGER)
     private Quiz quiz;
 
     public Question() {
     }
 
-    public Question(long quesId, String content, String image, String option1, String option2, String option3, String option4, String answer, Quiz quiz) {
+
+    public Question(long quesId, String content,String givenAnswer, String image, String option1, String option2, String option3, String option4, String answer, Quiz quiz) {
         this.quesId = quesId;
         this.content = content;
         this.image = image;
@@ -42,6 +43,7 @@ public class Question {
         this.option4 = option4;
         this.answer = answer;
         this.quiz = quiz;
+        this.givenAnswer = givenAnswer;
     }
 
     public long getQuesId() {
@@ -120,8 +122,17 @@ public class Question {
         return quiz;
     }
 
+    public String getGivenAnswer() {
+        return givenAnswer;
+    }
+
+    public void setGivenAnswer(String givenAnswer) {
+        this.givenAnswer = givenAnswer;
+    }
+
     public Question setQuiz(Quiz quiz) {
         this.quiz = quiz;
         return this;
     }
+
 }

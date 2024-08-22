@@ -17,9 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @CrossOrigin("*")
@@ -165,4 +163,40 @@ public class QuestionController {
             return ResponseEntity.status(500).body(response);
         }
     }
+
+    @PostMapping(value = "/eval-quiz")
+    public ResponseEntity<?> evaluationQuiz(@RequestBody List<Question> questions) {
+        int marksGot = 0;
+        int correctAnswers = 0;
+        int attempted = 0;
+
+        for (Question q : questions) {
+            Question question = this.questionService.getQuestionById(q.getQuesId());
+
+            // Check if the question was attempted
+            if (q.getGivenAnswer() != null && !q.getGivenAnswer().trim().isEmpty()) {
+                attempted++;
+
+                // Check if the given answer is correct
+                if (question.getAnswer().trim().equalsIgnoreCase(q.getGivenAnswer().trim())) {
+                    correctAnswers++;
+                    // Assuming each correct answer gives 1 mark, you can adjust as needed
+                    marksGot += 1;
+                }
+            }
+        }
+
+        // Create a result object to return
+        Map<String, Object> result = new HashMap<>();
+        result.put("marksGot", marksGot);
+        result.put("correctAnswers", correctAnswers);
+        result.put("attempted", attempted);
+        result.put("totalQuestions", questions.size());
+
+        return ResponseEntity.ok(result);
+    }
+
+
+
 }
+ 
