@@ -7,6 +7,9 @@
 
 package com.exam.example.examportalproject.model.category;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -24,7 +27,10 @@ public class Question {
     private String option2;
     private String option3;
     private String option4;
+
     private String answer;
+
+    @Transient
     private String givenAnswer;
     @ManyToOne(fetch = FetchType.EAGER)
     private Quiz quiz;
@@ -109,18 +115,17 @@ public class Question {
         return this;
     }
 
+
     public String getAnswer() {
         return answer;
     }
+
 
     public Question setAnswer(String answer) {
         this.answer = answer;
         return this;
     }
 
-    public Quiz getQuiz() {
-        return quiz;
-    }
 
     public String getGivenAnswer() {
         return givenAnswer;
@@ -128,6 +133,10 @@ public class Question {
 
     public void setGivenAnswer(String givenAnswer) {
         this.givenAnswer = givenAnswer;
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
     }
 
     public Question setQuiz(Quiz quiz) {

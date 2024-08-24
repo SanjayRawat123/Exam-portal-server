@@ -58,7 +58,7 @@ public class QuizController {
      */
     @PutMapping(value = "/")
     public ResponseEntity<ApiResponse<Quiz>> update(@RequestBody Quiz quiz) {
-        logger.info("Updating quiz with ID: {}", quiz.getqId());
+        logger.info("Updating quiz with ID: {}", quiz.getNumOfQuestions());
         try {
             Quiz updatedQuiz = quizService.updateQuiz(quiz.getqId(), quiz);
             ApiResponse<Quiz> response = new ApiResponse<>("success", "Quiz updated successfully", updatedQuiz);

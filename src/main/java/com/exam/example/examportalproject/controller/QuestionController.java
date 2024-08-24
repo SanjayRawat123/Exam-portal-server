@@ -93,7 +93,9 @@ public class QuestionController {
             if (questions.size() > numOfQuestions) {
                 questions = questions.subList(0, numOfQuestions);
             }
-
+            questions.forEach((q)->{
+               q.setAnswer("");
+            });
             Collections.shuffle(questions);
             ApiResponse<List<Question>> response = new ApiResponse<>("success", "Questions retrieved successfully", questions);
             return ResponseEntity.ok(response);
